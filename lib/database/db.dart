@@ -3,11 +3,6 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
 
 class DB {
-  // Construtor com acesso privado
-  DB._();
-  // Criar uma instancia de DB
-  static final DB instance = DB._();
-  //Instancia do SQLite
   static Database? _database;
 
   get database async {
@@ -30,6 +25,7 @@ class DB {
 
   String get _subjects => '''
     CREATE TABLE subjects (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
       professor TEXT
     );

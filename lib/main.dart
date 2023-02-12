@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
 void main() {
-  //getIt.registerSingleton<AppModel>(DB(), signalsReady: true);
+  getIt.registerSingleton<DB>(DB(), signalsReady: true);
   runApp(const MyApp());
 }
 

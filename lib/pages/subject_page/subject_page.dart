@@ -64,13 +64,9 @@ class SubjectPage extends StatelessWidget {
               }),
             ),
 
-            ElevatedButton(onPressed: subjectController.insert, child: Text('insert'))
           ],
         ),
       ),
-      floatingActionButton: ElevatedButton(
-          onPressed: subjectController.test,
-          child: const Text('add')),
     );
   }
 }
