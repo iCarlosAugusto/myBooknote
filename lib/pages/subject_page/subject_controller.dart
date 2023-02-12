@@ -27,4 +27,13 @@ abstract class _SubjectControllerBase with Store {
       images.add(image);
     }
   }
+
+  @action
+  pickImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+
+    if(image != null){
+      images.add(image);
+    }
+  }
 }

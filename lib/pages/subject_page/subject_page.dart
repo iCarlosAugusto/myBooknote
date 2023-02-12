@@ -19,28 +19,47 @@ class SubjectPage extends StatelessWidget {
         child: Column(
           children: [
             const Text('Imagens'),
-            GestureDetector(
-              onTap: subjectController.pickImageFromGalery,
-              child: Container(
-                margin: const EdgeInsets.only(top: 8),
-                width: 60,
-                height: 60,
-                decoration: const BoxDecoration(
-                    color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: subjectController.pickImageFromGalery,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 8, right: 6),
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                        color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: const Icon(Icons.add, color: Colors.white),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: subjectController.pickImageFromCamera,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 8),
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                        color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: const Icon(Icons.camera_alt_outlined, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
-            Container(
-              height: 500,
+            SizedBox(
+              height: 250,
               child: Observer(builder: (_) {
                 return ListView.separated(
+                    padding: const EdgeInsets.only(top: 16),
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => Image.file(
-                          File(subjectController.images[index].path),
-                          width: 300,
-                          height: 300,
+                    itemBuilder: (context, index) => Container(
+                          width: 200,
+                          height: 250,
+                          child: Image.file(
+                            File(subjectController.images[index].path),
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                    separatorBuilder: (_, __) => SizedBox(height: 5),
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemCount: subjectController.images.length);
               }),
             ),
