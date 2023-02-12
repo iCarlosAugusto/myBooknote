@@ -2,7 +2,9 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
+import 'package:mybooknote/pages/home_controller.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
 import 'package:mybooknote/widgets/subjectCard/subject_card.dart';
 
@@ -14,14 +16,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController subjectTextfieldController = TextEditingController();
-  TextEditingController professorTextfieldController = TextEditingController();
 
-  List<SubjectEntity> subjects = [
-    SubjectEntity(name: 'Direito civil', professor: 'Leonardo'),
-  ];
+  HomeController controller = HomeController();
+
   List<SubjectEntity> selectedSubjects = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,22 +31,25 @@ class _HomeState extends State<Home> {
           child: Column(
             children: [
               const Text('Olá, Carlos.'),
+              ElevatedButton(onPressed: controller.getAllSubjects, child: Text('GET ALL')),
               Container(
                 height: 300,
-                child: ListView.separated(
-                    itemBuilder: (BuildContext context, int index) => SubjectCard(
-                        name: subjects[index].name,
-                        professor: subjects[index].professor,
-                        onLongPress: () => selectedSubjects.add(subjects[index]),
-                        onTap: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SubjectPage()),
-                          );
-                        },
-                        selected: selectedSubjects.contains(subjects[index])),
-                    separatorBuilder: (_, __) => const SizedBox(height: 8),
-                    itemCount: subjects.length),
+                child: Observer(builder: (_) {
+                  return ListView.separated(
+                      itemBuilder: (BuildContext context, int index) => SubjectCard(
+                          name: controller.subjects[index]['name'],
+                          professor: controller.subjects[index]['professor'],
+                          onLongPress: () => selectedSubjects.add(controller.subjects[index]),
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const SubjectPage()),
+                            );
+                          },
+                          selected: selectedSubjects.contains(controller.subjects[index])),
+                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      itemCount: controller.subjects.length);
+                }),
               )
             ],
           ),
@@ -57,35 +58,31 @@ class _HomeState extends State<Home> {
       floatingActionButton: ElevatedButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) => Padding(
-                    padding: EdgeInsets.only(
-                        top: 16, left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: SingleChildScrollView(
-                      child: Container(
-                        height: 900,
-                        child: Form(
-                            child: Column(
-                          children: [
-                            const Text("Criar nova disciplina"),
-                            TextFormField(controller: subjectTextfieldController),
-                            TextFormField(controller: professorTextfieldController),
-                            ElevatedButton(
-                                onPressed: () {
-                                  SubjectEntity newSubject = SubjectEntity(
-                                      name: subjectTextfieldController.text,
-                                      professor: professorTextfieldController.text);
-                                  setState(() {
-                                    subjects.add(newSubject);
-                                  });
-                                },
-                                child: const Text('Criar'))
-                          ],
-                        )),
-                      ),
-                    ),
-                  ));
+         showModalBottomSheet(
+             context: context,
+             builder: (BuildContext context) => Padding(
+                   padding: EdgeInsets.only(
+                       top: 16, left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
+                   child: SingleChildScrollView(
+                     child: Container(
+                       height: 900,
+                       child: Form(
+                           child: Column(
+                         children: [
+                           const Text("Criar nova disciplina"),
+                           TextFormField(controller: controller.subjectTextfieldController),
+                           TextFormField(controller: controller.professorTextfieldController),
+                           ElevatedButton(
+                               onPressed: () => controller.createNewSubject(
+                                  name: controller.subjectTextfieldController.text,
+                                  professor: controller.professorTextfieldController.text
+                                ),
+                               child: const Text('Criar'))
+                         ],
+                       )),
+                     ),
+                   ),
+                 ));
         },
       ),
     );

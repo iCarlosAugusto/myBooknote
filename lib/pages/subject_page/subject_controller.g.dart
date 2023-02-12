@@ -25,6 +25,26 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
     });
   }
 
+  late final _$pickImageFromGaleryAsyncAction = AsyncAction(
+      '_SubjectControllerBase.pickImageFromGalery',
+      context: context);
+
+  @override
+  Future pickImageFromGalery() {
+    return _$pickImageFromGaleryAsyncAction
+        .run(() => super.pickImageFromGalery());
+  }
+
+  late final _$pickImageFromCameraAsyncAction = AsyncAction(
+      '_SubjectControllerBase.pickImageFromCamera',
+      context: context);
+
+  @override
+  Future pickImageFromCamera() {
+    return _$pickImageFromCameraAsyncAction
+        .run(() => super.pickImageFromCamera());
+  }
+
   late final _$_SubjectControllerBaseActionController =
       ActionController(name: '_SubjectControllerBase', context: context);
 

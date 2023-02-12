@@ -8,7 +8,6 @@ import 'package:sqflite/sqlite_api.dart';
 class SubjectRepository implements ISubjectRepository{
   late Database db;
 
-
   SubjectRepository() {
     _initRepository();
   }
@@ -33,6 +32,6 @@ class SubjectRepository implements ISubjectRepository{
 
   @override
   Future<void> delete({required int id}) async {
-    await db.delete('subjects', where: 'id = ?', whereArgs: [1]);
+    await db.delete('subjects', where: 'id = ?', whereArgs: [id]);
   }
 }
