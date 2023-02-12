@@ -63,13 +63,13 @@ class SubjectPage extends StatelessWidget {
                     itemCount: subjectController.images.length);
               }),
             ),
+
+            ElevatedButton(onPressed: subjectController.insert, child: Text('insert'))
           ],
         ),
       ),
       floatingActionButton: ElevatedButton(
-          onPressed: () {
-            print(subjectController.images[0].path);
-          },
+          onPressed: subjectController.test,
           child: const Text('add')),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mybooknote/repositories/subject_repository.dart';
 part 'subject_controller.g.dart';
 
 class SubjectController = _SubjectControllerBase with _$SubjectController;
@@ -9,6 +10,7 @@ abstract class _SubjectControllerBase with Store {
   final ImagePicker _picker = ImagePicker();
 
   ObservableList<XFile> images = ObservableList<XFile>(); 
+  SubjectRepository subjectRepository = SubjectRepository();
   //List<XFile> images = [];
 
   @observable
@@ -35,5 +37,14 @@ abstract class _SubjectControllerBase with Store {
     if(image != null){
       images.add(image);
     }
+  }
+
+  @action
+  test() {
+    subjectRepository.getSubjects();
+  }
+
+  insert() {
+    subjectRepository.insert();
   }
 }

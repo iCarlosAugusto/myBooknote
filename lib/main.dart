@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mybooknote/database/db.dart';
 import 'package:mybooknote/pages/home.dart';
+import 'package:get_it/get_it.dart';
 
+final getIt = GetIt.instance;
 void main() {
+  //getIt.registerSingleton<AppModel>(DB(), signalsReady: true);
   runApp(const MyApp());
 }
 
