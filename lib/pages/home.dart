@@ -16,7 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   HomeController controller = HomeController();
 
   List<SubjectEntity> selectedSubjects = [];
@@ -31,7 +30,6 @@ class _HomeState extends State<Home> {
           child: Column(
             children: [
               const Text('Olá, Carlos.'),
-              ElevatedButton(onPressed: controller.getAllSubjects, child: Text('GET ALL')),
               Container(
                 height: 300,
                 child: Observer(builder: (_) {
@@ -50,7 +48,7 @@ class _HomeState extends State<Home> {
                       separatorBuilder: (_, __) => const SizedBox(height: 8),
                       itemCount: controller.subjects.length);
                 }),
-              )
+              ),
             ],
           ),
         ),
@@ -58,31 +56,30 @@ class _HomeState extends State<Home> {
       floatingActionButton: ElevatedButton(
         child: const Icon(Icons.add),
         onPressed: () {
-         showModalBottomSheet(
-             context: context,
-             builder: (BuildContext context) => Padding(
-                   padding: EdgeInsets.only(
-                       top: 16, left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
-                   child: SingleChildScrollView(
-                     child: Container(
-                       height: 900,
-                       child: Form(
-                           child: Column(
-                         children: [
-                           const Text("Criar nova disciplina"),
-                           TextFormField(controller: controller.subjectTextfieldController),
-                           TextFormField(controller: controller.professorTextfieldController),
-                           ElevatedButton(
-                               onPressed: () => controller.createNewSubject(
-                                  name: controller.subjectTextfieldController.text,
-                                  professor: controller.professorTextfieldController.text
-                                ),
-                               child: const Text('Criar'))
-                         ],
-                       )),
-                     ),
-                   ),
-                 ));
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) => Padding(
+                    padding: EdgeInsets.only(
+                        top: 16, left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        height: 900,
+                        child: Form(
+                            child: Column(
+                          children: [
+                            const Text("Criar nova disciplina"),
+                            TextFormField(controller: controller.subjectTextfieldController),
+                            TextFormField(controller: controller.professorTextfieldController),
+                            ElevatedButton(
+                                onPressed: () => controller.createNewSubject(
+                                    name: controller.subjectTextfieldController.text,
+                                    professor: controller.professorTextfieldController.text),
+                                child: const Text('Criar')),
+                          ],
+                        )),
+                      ),
+                    ),
+                  ));
         },
       ),
     );

@@ -20,7 +20,8 @@ class SubjectRepository implements ISubjectRepository{
   Future<void> create({required String name, required String professor}) async {
     await db.insert('subjects', {
       'name': name,
-      'professor': professor
+      'professor': professor,
+      'images': '{"image": ""}'
     });
   }
   

@@ -1,4 +1,5 @@
 import 'package:mybooknote/database/repositories/i_subject_repository.dart';
+import 'package:mybooknote/entities/subject_entity.dart';
 
 class GetAllSubjectsUsecase {
 

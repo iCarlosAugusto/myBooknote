@@ -27,7 +27,8 @@ class DB {
     CREATE TABLE subjects (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
-      professor TEXT
-    );
+      professor TEXT,
+      images TEXT
+    )
   ''';
 }
