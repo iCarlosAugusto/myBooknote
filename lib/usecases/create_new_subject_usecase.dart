@@ -1,4 +1,4 @@
-import 'package:mybooknote/database/repositories/i_subject_repository.dart';
+import 'package:mybooknote/database/repositories/subjects/i_subject_repository.dart';
 
 class CreateNewSubjectUseCase {
 

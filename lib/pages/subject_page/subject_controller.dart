@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../database/repositories/implemtations/subject_repository.dart';
+import '../../database/repositories/subjects/implemtations/subject_repository.dart';
 part 'subject_controller.g.dart';
 
 class SubjectController = _SubjectControllerBase with _$SubjectController;

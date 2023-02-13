@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mybooknote/database/db.dart';
-import 'package:mybooknote/database/repositories/i_subject_repository.dart';
+import 'package:mybooknote/database/repositories/subjects/i_subject_repository.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:sqflite/sqlite_api.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:mybooknote/database/repositories/implemtations/subject_repository.dart';
+import 'package:mybooknote/database/repositories/subjects/implemtations/subject_repository.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:mybooknote/usecases/create_new_subject_usecase.dart';

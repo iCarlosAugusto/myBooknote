@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mybooknote/database/db.dart';
-import 'package:mybooknote/database/repositories/implemtations/subject_repository.dart';
+import 'package:mybooknote/database/repositories/subjects/implemtations/subject_repository.dart';
 import 'package:mybooknote/pages/home.dart';
 import 'package:get_it/get_it.dart';
 
