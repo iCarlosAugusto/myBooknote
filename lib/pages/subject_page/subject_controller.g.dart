@@ -25,12 +25,20 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
     });
   }
 
+  late final _$loadImagesAsyncAction =
+      AsyncAction('_SubjectControllerBase.loadImages', context: context);
+
+  @override
+  Future<void> loadImages() {
+    return _$loadImagesAsyncAction.run(() => super.loadImages());
+  }
+
   late final _$pickImageFromGaleryAsyncAction = AsyncAction(
       '_SubjectControllerBase.pickImageFromGalery',
       context: context);
 
   @override
-  Future pickImageFromGalery() {
+  Future<void> pickImageFromGalery() {
     return _$pickImageFromGaleryAsyncAction
         .run(() => super.pickImageFromGalery());
   }
@@ -40,7 +48,7 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
       context: context);
 
   @override
-  Future pickImageFromCamera() {
+  Future<void> pickImageFromCamera() {
     return _$pickImageFromCameraAsyncAction
         .run(() => super.pickImageFromCamera());
   }

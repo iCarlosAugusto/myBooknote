@@ -29,7 +29,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
       AsyncAction('_HomeControllerBase.getAllSubjects', context: context);
 
   @override
-  Future getAllSubjects() {
+  Future<void> getAllSubjects() {
     return _$getAllSubjectsAsyncAction.run(() => super.getAllSubjects());
   }
 
@@ -37,7 +37,8 @@ mixin _$HomeController on _HomeControllerBase, Store {
       AsyncAction('_HomeControllerBase.createNewSubject', context: context);
 
   @override
-  Future createNewSubject({required String name, required String professor}) {
+  Future<void> createNewSubject(
+      {required String name, required String professor}) {
     return _$createNewSubjectAsyncAction
         .run(() => super.createNewSubject(name: name, professor: professor));
   }
