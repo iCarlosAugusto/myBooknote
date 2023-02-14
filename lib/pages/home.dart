@@ -26,30 +26,32 @@ class _HomeState extends State<Home> {
       appBar: AppBar(title: const Text('Home')),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Text('Olá, Carlos.'),
-              Container(
-                height: 300,
-                child: Observer(builder: (_) {
-                  return ListView.separated(
-                      itemBuilder: (BuildContext context, int index) => SubjectCard(
-                          name: controller.subjects[index].name,
-                          professor: controller.subjects[index].professor,
-                          onLongPress: () => selectedSubjects.add(controller.subjects[index]),
-                          onTap: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const SubjectPage()),
-                            );
-                          },
-                          selected: selectedSubjects.contains(controller.subjects[index])),
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemCount: controller.subjects.length);
-                }),
-              ),
-            ],
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text('Olá, Carlos.'),
+                Container(
+                  height: 300,
+                  child: Observer(builder: (_) {
+                    return ListView.separated(
+                        itemBuilder: (BuildContext context, int index) => SubjectCard(
+                            name: controller.subjects[index].name,
+                            professor: controller.subjects[index].professor,
+                            onLongPress: () => selectedSubjects.add(controller.subjects[index]),
+                            onTap: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const SubjectPage()),
+                              );
+                            },
+                            selected: selectedSubjects.contains(controller.subjects[index])),
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemCount: controller.subjects.length);
+                  }),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -57,27 +59,43 @@ class _HomeState extends State<Home> {
         child: const Icon(Icons.add),
         onPressed: () {
           showModalBottomSheet(
+              isScrollControlled: true,
               context: context,
               builder: (BuildContext context) => Padding(
-                    padding: EdgeInsets.only(
-                        top: 16, left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: SingleChildScrollView(
-                      child: Container(
-                        height: 900,
-                        child: Form(
-                            child: Column(
-                          children: [
-                            const Text("Criar nova disciplina"),
-                            TextFormField(controller: controller.subjectTextfieldController),
-                            TextFormField(controller: controller.professorTextfieldController),
-                            ElevatedButton(
-                                onPressed: () => controller.createNewSubject(
-                                    name: controller.subjectTextfieldController.text,
-                                    professor: controller.professorTextfieldController.text),
-                                child: const Text('Criar')),
-                          ],
-                        )),
-                      ),
+                    padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
+                    child: SafeArea(
+                      child: Form(
+                          child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () => Navigator.pop(context),
+                                icon: const Icon(Icons.close_rounded)),
+                              const Text("Criar nova disciplina"),
+                            ],
+                          ),
+                          TextFormField(
+                            controller: controller.subjectTextfieldController,
+                            decoration: const InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: 'Nome da disciplina',
+                            ),
+                          ),
+                          TextFormField(
+                            controller: controller.professorTextfieldController,
+                            decoration: const InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: 'Nome do professor',
+                            ),
+                          ),
+                          ElevatedButton(
+                              onPressed: () => controller.createNewSubject(
+                                  name: controller.subjectTextfieldController.text,
+                                  professor: controller.professorTextfieldController.text),
+                              child: const Text('Criar')),
+                        ],
+                      )),
                     ),
                   ));
         },
