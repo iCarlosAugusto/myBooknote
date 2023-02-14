@@ -32,6 +32,10 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 const Text('Olá, Carlos.'),
+
+                ElevatedButton(onPressed: controller.criarNoFirebase, 
+                  child: const Text('Criar no firebase')
+                ),
                 Container(
                   height: 300,
                   child: Observer(builder: (_) {

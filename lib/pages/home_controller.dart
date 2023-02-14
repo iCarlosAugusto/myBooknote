@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mybooknote/database/repositories/subjects/implemtations/subject_repository.dart';
@@ -10,7 +11,6 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  
   _HomeControllerBase() {
     Future.delayed(const Duration(seconds: 2), () {
       getAllSubjects();
@@ -18,7 +18,8 @@ abstract class _HomeControllerBase with Store {
   }
 
   final GetAllSubjectsUsecase _getAllSubjectsUsecase = GetAllSubjectsUsecase(getIt<SubjectRepository>());
-  final CreateNewSubjectUseCase _createNewSubjectUseCase = CreateNewSubjectUseCase(getIt<SubjectRepository>());
+  final CreateNewSubjectUseCase _createNewSubjectUseCase =
+      CreateNewSubjectUseCase(getIt<SubjectRepository>());
 
   TextEditingController subjectTextfieldController = TextEditingController();
   TextEditingController professorTextfieldController = TextEditingController();
@@ -38,5 +39,12 @@ abstract class _HomeControllerBase with Store {
   Future<void> createNewSubject({required String name, required String professor}) async {
     SubjectEntity subject = await _createNewSubjectUseCase.call(name: name, professor: professor);
     subjects.add(subject);
+  }
+
+  criarNoFirebase() {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final user = <String, dynamic>{"first": "Ada", "last": "Lovelace", "born": 1815};
+    db.collection("users").add(user).then((DocumentReference doc) =>
+    print('DocumentSnapshot added with ID: ${doc.id}'));
   }
 }
