@@ -50,10 +50,11 @@ class SubjectRepository implements ISubjectRepository{
       'subjects',
       {"images": imagesListFormatted.toString()},
       where: 'id = ?',
-      whereArgs: [id = 1]
+      whereArgs: [id = id]
     );
   }
 
+  @override
   Future<List<String>> listImages() async {
     List<SubjectEntity> subjects = await list();
     List<dynamic> images = jsonDecode(subjects.first.images);
