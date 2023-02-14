@@ -6,6 +6,7 @@ import 'package:mybooknote/database/repositories/subjects/i_subject_repository.d
 import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:uuid/uuid.dart';
 
 class SubjectRepository implements ISubjectRepository{
   late Database db;
@@ -19,12 +20,16 @@ class SubjectRepository implements ISubjectRepository{
   }
   
   @override
-  Future<void> create({required String name, required String professor}) async {
-    await db.insert('subjects', {
+  Future<SubjectEntity> create({required String name, required String professor}) async {
+    var subject = {
+      'id': const Uuid().v4(),
       'name': name,
       'professor': professor,
       'images': '[]'
-    });
+    };
+    await db.insert('subjects', subject);
+    return SubjectEntity.fromJson(subject);
+    
   }
   
   @override

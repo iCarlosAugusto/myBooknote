@@ -25,7 +25,7 @@ class DB {
 
   String get _subjects => '''
     CREATE TABLE subjects (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id TEXT PRIMARY KEY,
       name TEXT,
       professor TEXT,
       images TEXT

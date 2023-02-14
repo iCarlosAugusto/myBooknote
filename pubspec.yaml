@@ -45,6 +45,7 @@ dependencies:
   objectbox: ^1.7.2
   sqflite: ^2.2.4+1
   get_it: ^7.2.0
+  uuid: ^3.0.7
 
 
 

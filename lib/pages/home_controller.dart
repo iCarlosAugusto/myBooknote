@@ -28,14 +28,15 @@ abstract class _HomeControllerBase with Store {
   bool isLoading = true;
 
   @action
-  getAllSubjects() async {
+  Future<void> getAllSubjects() async {
     var result = await _getAllSubjectsUsecase();
     subjects.addAll(result);
     isLoading = false;
   }
 
   @action
-  createNewSubject({required String name, required String professor}) async {
-    await _createNewSubjectUseCase.call(name: name, professor: professor);
+  Future<void> createNewSubject({required String name, required String professor}) async {
+    SubjectEntity subject = await _createNewSubjectUseCase.call(name: name, professor: professor);
+    subjects.add(subject);
   }
 }

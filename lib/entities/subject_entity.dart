@@ -1,7 +1,7 @@
 class SubjectEntity {
   SubjectEntity({required this.id, required this.name, required this.professor, required this.images});
 
-  int id;
+  String id;
   String name;
   String professor;
   String images;

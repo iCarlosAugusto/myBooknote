@@ -51,19 +51,42 @@ class SubjectPage extends StatelessWidget {
                 return ListView.separated(
                     padding: const EdgeInsets.only(top: 16),
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => Container(
-                          width: 200,
-                          height: 250,
-                          child: Image.file(
-                            File(subjectController.images[index]),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) => MediaQuery(
+                                  data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+                                  child: SafeArea(
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          color: Colors.black,
+                                          child: Center(
+                                            child: Image.file(
+                                              File(subjectController.images[index]),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                            onPressed: () => Navigator.pop(context),
+                                            icon: const Icon(Icons.close_rounded, color: Colors.white, size: 32,)),
+                                      ],
+                                    ),
+                                  ),
+                                ));
+                      },
+                      child: Image.file(
+                        File(subjectController.images[index]),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemCount: subjectController.images.length);
               }),
             ),
-
           ],
         ),
       ),
