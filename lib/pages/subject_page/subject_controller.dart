@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mybooknote/main.dart';
 
 import '../../database/repositories/subjects/implemtations/subject_repository.dart';
 part 'subject_controller.g.dart';
@@ -27,6 +28,8 @@ abstract class _SubjectControllerBase with Store {
 
     if(image != null){
       images.add(image);
+      getIt<SubjectRepository>().addImage(id: 1, urlImage: image.path);
+      testeList();
     }
   }
 
@@ -37,6 +40,10 @@ abstract class _SubjectControllerBase with Store {
     if(image != null){
       images.add(image);
     }
+  }
+
+  testeList() async {
+    var a = await getIt<SubjectRepository>().list();
   }
 
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mybooknote/database/db.dart';
 import 'package:mybooknote/database/repositories/subjects/i_subject_repository.dart';
@@ -21,7 +23,7 @@ class SubjectRepository implements ISubjectRepository{
     await db.insert('subjects', {
       'name': name,
       'professor': professor,
-      'images': '{"image": ""}'
+      'images': '[]'
     });
   }
   
@@ -34,5 +36,20 @@ class SubjectRepository implements ISubjectRepository{
   @override
   Future<void> delete({required int id}) async {
     await db.delete('subjects', where: 'id = ?', whereArgs: [id]);
+  }
+  
+  @override
+  Future<void> addImage({required int id, required String urlImage}) async {
+    List subjects = await list();
+    List images = jsonDecode(subjects.first["images"]);
+    images.add(urlImage);
+    List imagesListFormatted = images.map((e) => '"$e"').toList();
+
+    await db.update(
+      'subjects',
+      {"images": imagesListFormatted.toString()},
+      where: 'id = ?',
+      whereArgs: [id = 1]
+    );
   }
 }
