@@ -55,7 +55,7 @@ class SubjectPage extends StatelessWidget {
                           width: 200,
                           height: 250,
                           child: Image.file(
-                            File(subjectController.images[index].path),
+                            File(subjectController.images[index]),
                             fit: BoxFit.fill,
                           ),
                         ),

@@ -11,8 +11,12 @@ abstract class _SubjectControllerBase with Store {
     
   final ImagePicker _picker = ImagePicker();
 
-  ObservableList<XFile> images = ObservableList<XFile>(); 
+  ObservableList images = ObservableList(); 
   SubjectRepository subjectRepository = SubjectRepository();
+
+  _SubjectControllerBase() {
+    loadImages();
+  }
 
   @observable
   int count = 0;
@@ -23,13 +27,18 @@ abstract class _SubjectControllerBase with Store {
   }
 
   @action
+  loadImages() async {
+    List resultImages = await getIt<SubjectRepository>().listImages();
+    images.addAll(resultImages);
+  }
+
+  @action
   pickImageFromGalery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if(image != null){
-      images.add(image);
+      images.add(image.path);
       getIt<SubjectRepository>().addImage(id: 1, urlImage: image.path);
-      testeList();
     }
   }
 
@@ -38,13 +47,7 @@ abstract class _SubjectControllerBase with Store {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if(image != null){
-      images.add(image);
+      images.add(image.path);
     }
   }
-
-  testeList() async {
-    var a = await getIt<SubjectRepository>().list();
-  }
-
-
 }

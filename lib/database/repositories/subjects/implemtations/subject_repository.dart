@@ -52,4 +52,10 @@ class SubjectRepository implements ISubjectRepository{
       whereArgs: [id = 1]
     );
   }
+
+  listImages() async {
+    List subjects = await list();
+    List images = jsonDecode(subjects.first["images"]);
+    return images;
+  }
 }
