@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/pages/home_controller.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
@@ -39,12 +40,7 @@ class _HomeState extends State<Home> {
                             name: controller.subjects[index].name,
                             professor: controller.subjects[index].professor,
                             onLongPress: () => selectedSubjects.add(controller.subjects[index]),
-                            onTap: () async {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const SubjectPage()),
-                              );
-                            },
+                            onTap: () async => context.push('/subject/${controller.subjects[index].id}'),
                             selected: selectedSubjects.contains(controller.subjects[index])),
                         separatorBuilder: (_, __) => const SizedBox(height: 8),
                         itemCount: controller.subjects.length);
@@ -70,7 +66,7 @@ class _HomeState extends State<Home> {
                           Row(
                             children: [
                               IconButton(
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => context.pop(),
                                 icon: const Icon(Icons.close_rounded)),
                               const Text("Criar nova disciplina"),
                             ],

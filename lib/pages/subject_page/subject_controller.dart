@@ -19,8 +19,8 @@ abstract class _SubjectControllerBase with Store {
   final ListImagesUseCase _listImagesUsecase = ListImagesUseCase(getIt<SubjectRepository>());
   final AddImageUsecase _addImageUsecase = AddImageUsecase(getIt<SubjectRepository>());
 
-  _SubjectControllerBase() {
-    loadImages();
+  _SubjectControllerBase({required String subjectID}) {
+    loadImages(id: subjectID);
   }
 
   @observable
@@ -32,28 +32,28 @@ abstract class _SubjectControllerBase with Store {
   }
 
   @action
-  Future<void> loadImages() async {
-    List<String> imageList = await _listImagesUsecase.call();
+  Future<void> loadImages({required String id}) async {
+    List<String> imageList = await _listImagesUsecase.call(id: id);
     images.addAll(imageList);
   }
 
   @action
-  Future<void> pickImageFromGalery() async {
+  Future<void> pickImageFromGalery({required String subjectID}) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if(image != null){
       images.add(image.path);
-      _addImageUsecase.call(id: 1, urlImage: image.path);
+      _addImageUsecase.call(id: subjectID, urlImage: image.path);
     }
   }
 
   @action
-  Future<void> pickImageFromCamera() async {
+  Future<void> pickImageFromCamera({required String subjectID}) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if(image != null){
       images.add(image.path);
-      _addImageUsecase.call(id: 1, urlImage: image.path);
+      _addImageUsecase.call(id: subjectID, urlImage: image.path);
     }
   }
 }

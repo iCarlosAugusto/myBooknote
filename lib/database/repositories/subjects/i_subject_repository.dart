@@ -5,6 +5,6 @@ abstract class ISubjectRepository {
   Future<SubjectEntity> create({required String name, required String professor}) ;
   Future<List<SubjectEntity>> list();
   Future<void> delete({required int id});
-  Future<void> addImage({required int id, required String urlImage});
-  Future<List<String>> listImages();
+  Future<void> addImage({required String id, required String urlImage});
+  Future<List<String>> listImages({required String id});
 }

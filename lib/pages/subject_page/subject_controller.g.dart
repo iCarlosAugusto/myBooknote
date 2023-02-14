@@ -29,8 +29,8 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
       AsyncAction('_SubjectControllerBase.loadImages', context: context);
 
   @override
-  Future<void> loadImages() {
-    return _$loadImagesAsyncAction.run(() => super.loadImages());
+  Future<void> loadImages({required String id}) {
+    return _$loadImagesAsyncAction.run(() => super.loadImages(id: id));
   }
 
   late final _$pickImageFromGaleryAsyncAction = AsyncAction(
@@ -38,9 +38,9 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
       context: context);
 
   @override
-  Future<void> pickImageFromGalery() {
+  Future<void> pickImageFromGalery({required String subjectID}) {
     return _$pickImageFromGaleryAsyncAction
-        .run(() => super.pickImageFromGalery());
+        .run(() => super.pickImageFromGalery(subjectID: subjectID));
   }
 
   late final _$pickImageFromCameraAsyncAction = AsyncAction(
@@ -48,9 +48,9 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
       context: context);
 
   @override
-  Future<void> pickImageFromCamera() {
+  Future<void> pickImageFromCamera({required String subjectID}) {
     return _$pickImageFromCameraAsyncAction
-        .run(() => super.pickImageFromCamera());
+        .run(() => super.pickImageFromCamera(subjectID: subjectID));
   }
 
   late final _$_SubjectControllerBaseActionController =

@@ -2,15 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:mybooknote/pages/subject_page/subject_controller.dart';
 
 class SubjectPage extends StatelessWidget {
-  const SubjectPage({super.key});
+  final String subjectID;
+  const SubjectPage({super.key, required this.subjectID});
 
   @override
   Widget build(BuildContext context) {
-    SubjectController subjectController = SubjectController();
+    SubjectController subjectController = SubjectController(subjectID: subjectID);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Materia')),
@@ -19,10 +21,13 @@ class SubjectPage extends StatelessWidget {
         child: Column(
           children: [
             const Text('Imagens'),
+            Text(subjectID),
+            ElevatedButton(
+                onPressed: () => subjectController.loadImages(id: subjectID), child: Text('CARREGAR FOTOS')),
             Row(
               children: [
                 GestureDetector(
-                  onTap: subjectController.pickImageFromGalery,
+                  onTap: () => subjectController.pickImageFromGalery(subjectID: subjectID),
                   child: Container(
                     margin: const EdgeInsets.only(top: 8, right: 6),
                     width: 60,
@@ -33,7 +38,7 @@ class SubjectPage extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: subjectController.pickImageFromCamera,
+                  onTap: () => subjectController.pickImageFromCamera(subjectID: subjectID),
                   child: Container(
                     margin: const EdgeInsets.only(top: 8),
                     width: 60,
@@ -52,37 +57,41 @@ class SubjectPage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 16),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) => MediaQuery(
-                                  data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
-                                  child: SafeArea(
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          color: Colors.black,
-                                          child: Center(
-                                            child: Image.file(
-                                              File(subjectController.images[index]),
-                                              fit: BoxFit.fill,
+                          onTap: () {
+                            showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) => MediaQuery(
+                                      data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+                                      child: SafeArea(
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              color: Colors.black,
+                                              child: Center(
+                                                child: Image.file(
+                                                  File(subjectController.images[index]),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            IconButton(
+                                                onPressed: () => context.pop(),
+                                                icon: const Icon(
+                                                  Icons.close_rounded,
+                                                  color: Colors.white,
+                                                  size: 32,
+                                                )),
+                                          ],
                                         ),
-                                        IconButton(
-                                            onPressed: () => Navigator.pop(context),
-                                            icon: const Icon(Icons.close_rounded, color: Colors.white, size: 32,)),
-                                      ],
-                                    ),
-                                  ),
-                                ));
-                      },
-                      child: Image.file(
-                        File(subjectController.images[index]),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
+                                      ),
+                                    ));
+                          },
+                          child: Image.file(
+                            File(subjectController.images[index]),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemCount: subjectController.images.length);
               }),

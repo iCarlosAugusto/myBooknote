@@ -5,7 +5,7 @@ class AddImageUsecase {
   final ISubjectRepository _subjectRepository;
   AddImageUsecase(this._subjectRepository);
 
-  Future<void> call({required int id, required String urlImage}) async {
+  Future<void> call({required String id, required String urlImage}) async {
     await _subjectRepository.addImage(id: id, urlImage: urlImage);
   }
 }
