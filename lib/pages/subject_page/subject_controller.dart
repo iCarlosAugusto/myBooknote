@@ -11,7 +11,7 @@ abstract class _SubjectControllerBase with Store {
     
   final ImagePicker _picker = ImagePicker();
 
-  ObservableList images = ObservableList(); 
+  ObservableList<String> images = ObservableList<String>(); 
   SubjectRepository subjectRepository = SubjectRepository();
 
   _SubjectControllerBase() {
@@ -28,7 +28,7 @@ abstract class _SubjectControllerBase with Store {
 
   @action
   loadImages() async {
-    List resultImages = await getIt<SubjectRepository>().listImages();
+    List<String> resultImages = await getIt<SubjectRepository>().listImages();
     images.addAll(resultImages);
   }
 

@@ -35,8 +35,8 @@ class _HomeState extends State<Home> {
                 child: Observer(builder: (_) {
                   return ListView.separated(
                       itemBuilder: (BuildContext context, int index) => SubjectCard(
-                          name: controller.subjects[index]['name'],
-                          professor: controller.subjects[index]['professor'],
+                          name: controller.subjects[index].name,
+                          professor: controller.subjects[index].professor,
                           onLongPress: () => selectedSubjects.add(controller.subjects[index]),
                           onTap: () async {
                             Navigator.push(

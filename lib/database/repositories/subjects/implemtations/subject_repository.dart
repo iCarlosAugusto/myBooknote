@@ -28,9 +28,10 @@ class SubjectRepository implements ISubjectRepository{
   }
   
   @override
-  Future<List> list() async {
+  Future<List<SubjectEntity>> list() async {
     List subjects = await db.query('subjects');
-    return subjects;
+    List<SubjectEntity> list = subjects.map((e) => SubjectEntity.fromJson(e)).toList();
+    return list;
   }
 
   @override
@@ -40,10 +41,10 @@ class SubjectRepository implements ISubjectRepository{
   
   @override
   Future<void> addImage({required int id, required String urlImage}) async {
-    List subjects = await list();
-    List images = jsonDecode(subjects.first["images"]);
+    List<SubjectEntity> subjects = await list();
+    List<dynamic> images = jsonDecode(subjects.first.images);
     images.add(urlImage);
-    List imagesListFormatted = images.map((e) => '"$e"').toList();
+    List<String> imagesListFormatted = images.map((e) => '"$e"').toList();
 
     await db.update(
       'subjects',
@@ -53,9 +54,10 @@ class SubjectRepository implements ISubjectRepository{
     );
   }
 
-  listImages() async {
-    List subjects = await list();
-    List images = jsonDecode(subjects.first["images"]);
-    return images;
+  Future<List<String>> listImages() async {
+    List<SubjectEntity> subjects = await list();
+    List<dynamic> images = jsonDecode(subjects.first.images);
+    List<String> imagesFormatted = images.map((item) => item.toString()).toList();
+    return imagesFormatted;
   }
 }
