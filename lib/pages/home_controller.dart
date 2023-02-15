@@ -6,15 +6,14 @@ import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:mybooknote/usecases/create_new_subject_usecase.dart';
 import 'package:mybooknote/usecases/get_all_subjects_usecase.dart';
+import 'package:mybooknote/usecases/list_images_usecase.dart';
 part 'home_controller.g.dart';
 
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
   _HomeControllerBase() {
-    Future.delayed(const Duration(seconds: 2), () {
-      getAllSubjects();
-    });
+    getAllSubjects();
   }
 
   final GetAllSubjectsUsecase _getAllSubjectsUsecase = GetAllSubjectsUsecase(getIt<SubjectRepository>());
@@ -24,27 +23,23 @@ abstract class _HomeControllerBase with Store {
   TextEditingController subjectTextfieldController = TextEditingController();
   TextEditingController professorTextfieldController = TextEditingController();
 
-  ObservableList subjects = ObservableList();
+  late CollectionReference subjects;
+
   @observable
   bool isLoading = true;
 
   @action
-  Future<void> getAllSubjects() async {
-    var result = await _getAllSubjectsUsecase();
-    subjects.addAll(result);
-    isLoading = false;
+  getAllSubjects() async {
+    subjects = _getAllSubjectsUsecase.call();
   }
 
   @action
   Future<void> createNewSubject({required String name, required String professor}) async {
-    SubjectEntity subject = await _createNewSubjectUseCase.call(name: name, professor: professor);
-    subjects.add(subject);
+    await _createNewSubjectUseCase.call(name: name, professor: professor);
   }
 
-  criarNoFirebase() {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    final user = <String, dynamic>{"first": "Ada", "last": "Lovelace", "born": 1815};
-    db.collection("users").add(user).then((DocumentReference doc) =>
-    print('DocumentSnapshot added with ID: ${doc.id}'));
+  criarNoFirebase() async {
+    var a = await ListImagesUseCase(getIt<SubjectRepository>()).call(id: 'id');
+    print(a);
   }
 }

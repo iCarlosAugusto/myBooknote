@@ -1,70 +1,37 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:mybooknote/database/db.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mybooknote/database/repositories/subjects/i_subject_repository.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
-import 'package:mybooknote/main.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:uuid/uuid.dart';
 
-class SubjectRepository implements ISubjectRepository{
-  late Database db;
+class SubjectRepository implements ISubjectRepository {
 
-  SubjectRepository() {
-    _initRepository();
+  @override
+  Future<void> create({required String name, required String professor}) async {
+    SubjectEntity subject = SubjectEntity(id: const Uuid().v4(), name: name, professor: professor, images: []);
+    FirebaseFirestore dbFirebase = FirebaseFirestore.instance;
+    await dbFirebase.collection('subjects').add(subject.toJson());
   }
 
-  _initRepository() async {
-    db = await getIt<DB>().database;
-  }
-  
   @override
-  Future<SubjectEntity> create({required String name, required String professor}) async {
-    var subject = {
-      'id': const Uuid().v4(),
-      'name': name,
-      'professor': professor,
-      'images': '[]'
-    };
-    await db.insert('subjects', subject);
-    return SubjectEntity.fromJson(subject);
-    
-  }
-  
-  @override
-  Future<List<SubjectEntity>> list() async {
-    List subjects = await db.query('subjects');
-    List<SubjectEntity> list = subjects.map((e) => SubjectEntity.fromJson(e)).toList();
-    return list;
+  CollectionReference<Map<String, dynamic>> list()  {
+    CollectionReference<Map<String, dynamic>> subjects = FirebaseFirestore.instance.collection('subjects');
+    return subjects;
   }
 
   @override
   Future<void> delete({required int id}) async {
-    await db.delete('subjects', where: 'id = ?', whereArgs: [id]);
+    
   }
-  
+
   @override
   Future<void> addImage({required String id, required String urlImage}) async {
-    List<SubjectEntity> subjects = await list();
-    List<dynamic> images = jsonDecode(subjects.first.images);
-    images.add(urlImage);
-    List<String> imagesListFormatted = images.map((e) => '"$e"').toList();
-
-    await db.update(
-      'subjects',
-      {"images": imagesListFormatted.toString()},
-      where: 'id = ?',
-      whereArgs: [id = id]
-    );
+    
   }
 
   @override
-  Future<List<String>> listImages({required String id}) async {
-    List queryResult = await db.query('subjects', where: 'id = ?', whereArgs: [id]);
-    List<SubjectEntity> listSubjects = queryResult.map((e) => SubjectEntity.fromJson(e)).toList();
-    List<dynamic> images = jsonDecode(listSubjects.first.images);
-    List<String> imagesFormatted = images.map((item) => item.toString()).toList();
-    return imagesFormatted;
+  Future<List> listImages({required String id}) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    DocumentSnapshot<Map<String, dynamic>> res = await db.collection("subjects").doc("hHkLts8sy7q0yBSx753C").get();
+    return res.data()?['images'];
   }
 }

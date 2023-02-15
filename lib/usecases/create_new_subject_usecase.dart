@@ -7,7 +7,6 @@ class CreateNewSubjectUseCase {
   CreateNewSubjectUseCase(this._subjectRepository);
 
   call({required String name, required String professor }) async {
-    SubjectEntity subject = await _subjectRepository.create(name: name, professor: professor);
-    return subject;
+    await _subjectRepository.create(name: name, professor: professor);
   }
 }

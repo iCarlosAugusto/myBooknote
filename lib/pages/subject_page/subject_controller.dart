@@ -33,8 +33,7 @@ abstract class _SubjectControllerBase with Store {
 
   @action
   Future<void> loadImages({required String id}) async {
-    List<String> imageList = await _listImagesUsecase.call(id: id);
-    images.addAll(imageList);
+
   }
 
   @action

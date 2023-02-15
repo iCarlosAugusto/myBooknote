@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mybooknote/database/repositories/subjects/implemtations/subject_repository.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
+import 'package:mybooknote/main.dart';
 import 'package:mybooknote/pages/home_controller.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
 import 'package:mybooknote/widgets/subjectCard/subject_card.dart';
@@ -20,6 +24,7 @@ class _HomeState extends State<Home> {
   HomeController controller = HomeController();
 
   List<SubjectEntity> selectedSubjects = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,23 +37,28 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 const Text('Olá, Carlos.'),
-
-                ElevatedButton(onPressed: controller.criarNoFirebase, 
-                  child: const Text('Criar no firebase')
-                ),
-                Container(
+                ElevatedButton(onPressed: controller.criarNoFirebase, child: const Text('Criar listar fotos')),
+                SizedBox(
                   height: 300,
-                  child: Observer(builder: (_) {
-                    return ListView.separated(
-                        itemBuilder: (BuildContext context, int index) => SubjectCard(
-                            name: controller.subjects[index].name,
-                            professor: controller.subjects[index].professor,
-                            onLongPress: () => selectedSubjects.add(controller.subjects[index]),
-                            onTap: () async => context.push('/subject/${controller.subjects[index].id}'),
-                            selected: selectedSubjects.contains(controller.subjects[index])),
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
-                        itemCount: controller.subjects.length);
-                  }),
+                  child: 
+                  StreamBuilder(
+                      stream: controller.subjects.snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) return const CircularProgressIndicator();
+                        return ListView.separated(
+                          itemBuilder: (BuildContext context, int index) {
+                            SubjectEntity subject = SubjectEntity.fromMap(snapshot.data!.docs[index]);
+                            return SubjectCard(
+                                name: subject.name,
+                                professor: subject.professor,
+                                onLongPress: () => print('LONG PRESS'),
+                                onTap: () => context.push('/subject/${subject.id}'),
+                                selected: false);
+                          },
+                          separatorBuilder: (_, __) => const SizedBox(height: 8),
+                          itemCount: snapshot.data!.docs.length,
+                        );
+                      }),
                 ),
               ],
             ),
@@ -70,8 +80,7 @@ class _HomeState extends State<Home> {
                           Row(
                             children: [
                               IconButton(
-                                onPressed: () => context.pop(),
-                                icon: const Icon(Icons.close_rounded)),
+                                  onPressed: () => context.pop(), icon: const Icon(Icons.close_rounded)),
                               const Text("Criar nova disciplina"),
                             ],
                           ),
