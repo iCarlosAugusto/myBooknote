@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mybooknote/entities/image_entity.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:mybooknote/usecases/add_image_use_case.dart';
@@ -15,7 +17,7 @@ abstract class _SubjectControllerBase with Store {
     
   final ImagePicker _picker = ImagePicker();
 
-  ObservableList images = ObservableList(); 
+  ObservableList<ImageEntity> images = ObservableList<ImageEntity>(); 
 
   SubjectRepository subjectRepository = SubjectRepository();
   final ListImagesUseCase _listImagesUsecase = ListImagesUseCase(getIt<SubjectRepository>());
@@ -35,25 +37,11 @@ abstract class _SubjectControllerBase with Store {
 
   @action
   Future<void> loadImages({required String id}) async {
-    List list = await _listImagesUsecase(id: id);
-    images.addAll(list);
+    List<ImageEntity> list = await _listImagesUsecase(id: id);
+    images.addAll(list.reversed);
   }
 
   addFotoTeste() async{
-    var count = 0;
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    var result = await db.collection("subjects")
-      .doc("nPFz8RVcSYHJQWfq5dMA")
-      .get();
-    var subject = SubjectEntity.fromMap(result);
-    var images = ['Adicionada teste $count', ...subject.images];
-    db.collection("subjects").doc("nPFz8RVcSYHJQWfq5dMA").update({
-      'images': images
-    });
-    count++;
-      //.update({
-      //  'images': ['Novo teste 15 fev']
-      //});
   }
 
   @action
@@ -61,8 +49,8 @@ abstract class _SubjectControllerBase with Store {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if(image != null){
-      images.add(image.path);
-      _addImageUsecase.call(id: subjectID, urlImage: image.path);
+      ImageEntity newImage = await _addImageUsecase.call(id: subjectID, urlImage: image.path);
+      images.add(newImage);
     }
   }
 
@@ -71,8 +59,8 @@ abstract class _SubjectControllerBase with Store {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if(image != null){
-      images.add(image.path);
-      _addImageUsecase.call(id: subjectID, urlImage: image.path);
+      ImageEntity newImage = await _addImageUsecase.call(id: subjectID, urlImage: image.path);
+      images.add(newImage);
     }
   }
 }

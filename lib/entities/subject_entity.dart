@@ -1,31 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mybooknote/entities/image_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'subject_entity.g.dart';
+
+@JsonSerializable()
 class SubjectEntity {
-  SubjectEntity({required this.id, required this.name, required this.professor, required this.images});
-
   String id;
   String name;
   String professor;
-  List<dynamic> images;
+  List<ImageEntity> images;
 
-  factory SubjectEntity.fromJson(Map<String, dynamic> json) => SubjectEntity(
-    id: json["id"],
-    name: json["name"],
-    professor: json["professor"],
-    images: json["images"],
-  );
+  SubjectEntity({required this.id, required this.name, required this.professor, required this.images});
 
-  factory SubjectEntity.fromMap(DocumentSnapshot document) => SubjectEntity(
-    id: document["id"],
-    name: document["name"],
-    professor: document["professor"],
-    images: document["images"],
-  );
+  factory SubjectEntity.fromJson(Map<String, dynamic> json) => _$SubjectEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "professor": professor,
-    "images": images,
-  };
+  Map<String, dynamic> toJson() => _$SubjectEntityToJson(this);
 }

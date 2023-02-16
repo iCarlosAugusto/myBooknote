@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mybooknote/database/repositories/subjects/implemtations/subject_repository.dart';
+import 'package:mybooknote/entities/image_entity.dart';
 import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:mybooknote/pages/home_controller.dart';
@@ -37,17 +38,18 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 const Text('Olá, Carlos.'),
-                ElevatedButton(onPressed: controller.criarNoFirebase, child: const Text('Criar listar fotos')),
+                ElevatedButton(
+                    onPressed: controller.criarNoFirebase, child: const Text('Criar listar fotos')),
                 SizedBox(
                   height: 300,
-                  child: 
-                  StreamBuilder(
+                  child: StreamBuilder(
                       stream: controller.subjects.snapshots(),
                       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) return const CircularProgressIndicator();
-                        return ListView.separated(
+                        return 
+                        ListView.separated(
                           itemBuilder: (BuildContext context, int index) {
-                            SubjectEntity subject = SubjectEntity.fromMap(snapshot.data!.docs[index]);
+                            SubjectEntity subject = SubjectEntity.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
                             return SubjectCard(
                                 name: subject.name,
                                 professor: subject.professor,

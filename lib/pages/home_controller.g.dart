@@ -25,6 +25,14 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  late final _$getAllSubjectsAsyncAction =
+      AsyncAction('_HomeControllerBase.getAllSubjects', context: context);
+
+  @override
+  Future getAllSubjects() {
+    return _$getAllSubjectsAsyncAction.run(() => super.getAllSubjects());
+  }
+
   late final _$createNewSubjectAsyncAction =
       AsyncAction('_HomeControllerBase.createNewSubject', context: context);
 
@@ -33,20 +41,6 @@ mixin _$HomeController on _HomeControllerBase, Store {
       {required String name, required String professor}) {
     return _$createNewSubjectAsyncAction
         .run(() => super.createNewSubject(name: name, professor: professor));
-  }
-
-  late final _$_HomeControllerBaseActionController =
-      ActionController(name: '_HomeControllerBase', context: context);
-
-  @override
-  void getAllSubjects() {
-    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
-        name: '_HomeControllerBase.getAllSubjects');
-    try {
-      return super.getAllSubjects();
-    } finally {
-      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
-    }
   }
 
   @override

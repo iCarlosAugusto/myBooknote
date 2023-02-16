@@ -68,7 +68,7 @@ class SubjectPage extends StatelessWidget {
                                               color: Colors.black,
                                               child: Center(
                                                 child: Image.file(
-                                                  File(subjectController.images[index]),
+                                                  File(subjectController.images[index].url),
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
@@ -86,7 +86,7 @@ class SubjectPage extends StatelessWidget {
                                     ));
                           },
                           child: Image.file(
-                            File(subjectController.images[index]),
+                            File(subjectController.images[index].url),
                             fit: BoxFit.fill,
                           ),
                         ),
