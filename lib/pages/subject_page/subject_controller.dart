@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:mybooknote/usecases/add_image_use_case.dart';
 import 'package:mybooknote/usecases/list_images_usecase.dart';
@@ -13,7 +15,7 @@ abstract class _SubjectControllerBase with Store {
     
   final ImagePicker _picker = ImagePicker();
 
-  ObservableList<String> images = ObservableList<String>(); 
+  ObservableList images = ObservableList(); 
 
   SubjectRepository subjectRepository = SubjectRepository();
   final ListImagesUseCase _listImagesUsecase = ListImagesUseCase(getIt<SubjectRepository>());
@@ -33,7 +35,25 @@ abstract class _SubjectControllerBase with Store {
 
   @action
   Future<void> loadImages({required String id}) async {
+    List list = await _listImagesUsecase(id: id);
+    images.addAll(list);
+  }
 
+  addFotoTeste() async{
+    var count = 0;
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    var result = await db.collection("subjects")
+      .doc("nPFz8RVcSYHJQWfq5dMA")
+      .get();
+    var subject = SubjectEntity.fromMap(result);
+    var images = ['Adicionada teste $count', ...subject.images];
+    db.collection("subjects").doc("nPFz8RVcSYHJQWfq5dMA").update({
+      'images': images
+    });
+    count++;
+      //.update({
+      //  'images': ['Novo teste 15 fev']
+      //});
   }
 
   @action

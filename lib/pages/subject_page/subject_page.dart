@@ -22,8 +22,6 @@ class SubjectPage extends StatelessWidget {
           children: [
             const Text('Imagens'),
             Text(subjectID),
-            ElevatedButton(
-                onPressed: () => subjectController.loadImages(id: subjectID), child: Text('CARREGAR FOTOS')),
             Row(
               children: [
                 GestureDetector(

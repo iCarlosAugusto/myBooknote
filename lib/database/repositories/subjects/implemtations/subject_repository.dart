@@ -25,13 +25,22 @@ class SubjectRepository implements ISubjectRepository {
 
   @override
   Future<void> addImage({required String id, required String urlImage}) async {
-    
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    DocumentSnapshot collectionData = await db.collection("subjects")
+      .doc(id)
+      .get();
+    SubjectEntity subject = SubjectEntity.fromMap(collectionData);
+    List<String> images = [urlImage, ...subject.images];
+    await db.collection("subjects").doc(id).update({
+      'images': images
+    });
   }
 
   @override
   Future<List> listImages({required String id}) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentSnapshot<Map<String, dynamic>> res = await db.collection("subjects").doc("hHkLts8sy7q0yBSx753C").get();
-    return res.data()?['images'];
+    DocumentSnapshot collectionData = await db.collection("subjects").doc(id).get();
+    //SubjectEntity subject = SubjectEntity.fromMap(collectionData);
+    return collectionData['images'];
   }
 }

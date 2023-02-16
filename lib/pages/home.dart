@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
                                 name: subject.name,
                                 professor: subject.professor,
                                 onLongPress: () => print('LONG PRESS'),
-                                onTap: () => context.push('/subject/${subject.id}'),
+                                onTap: () => context.push('/subject/${snapshot.data!.docs[index].id}'),
                                 selected: false);
                           },
                           separatorBuilder: (_, __) => const SizedBox(height: 8),
