@@ -68,6 +68,28 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
   }
 
   @override
+  dynamic selectImage(ImageEntity image) {
+    final _$actionInfo = _$_SubjectControllerBaseActionController.startAction(
+        name: '_SubjectControllerBase.selectImage');
+    try {
+      return super.selectImage(image);
+    } finally {
+      _$_SubjectControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic clearSelectedImages() {
+    final _$actionInfo = _$_SubjectControllerBaseActionController.startAction(
+        name: '_SubjectControllerBase.clearSelectedImages');
+    try {
+      return super.clearSelectedImages();
+    } finally {
+      _$_SubjectControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 count: ${count}

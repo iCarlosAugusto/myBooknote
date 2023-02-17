@@ -36,7 +36,7 @@ class SubjectRepository implements ISubjectRepository {
       ).toJson(),
       ...subject['images']
     ];
-    await db.collection("subjects").doc(id).update({'images': images});
+    await db.collection("subjects").doc(id).update({'anotations': 'images'});
     return ImageEntity(url: urlImage, title: 'titleTest', description: 'description');
   }
 

@@ -44,7 +44,7 @@ class SubjectPage extends StatelessWidget {
                     height: 60,
                     decoration: const BoxDecoration(
                         color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: const Icon(Icons.add, color: Colors.white),
+                    child: const Icon(Icons.image_outlined, color: Colors.white),
                   ),
                 ),
                 GestureDetector(
@@ -156,6 +156,18 @@ class SubjectPage extends StatelessWidget {
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemCount: subjectController.images.length);
               }),
+            ),
+            Container(margin: EdgeInsets.only(top: 18), child: Text('Anotações')),
+            InkWell(
+              onTap: () => context.pushNamed('/createAnotation'),
+              child: Container(
+                margin: const EdgeInsets.only(top: 8, right: 6),
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                    color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: const Icon(Icons.add, color: Colors.white),
+              ),
             ),
           ],
         ),

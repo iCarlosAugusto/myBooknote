@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mybooknote/pages/createAnotation/create_anotation_page.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
 import 'package:mybooknote/routes/global_context.dart';
 
@@ -22,6 +23,13 @@ final GoRouter router = GoRouter(
         return SubjectPage(
           subjectID: state.params["subjectID"]!
         );
+      },
+    ),
+    GoRoute(
+      path: '/createAnotation',
+      name: '/createAnotation',
+      builder: (BuildContext context, GoRouterState state) {
+        return CreateAnotation();
       },
     ),
   ],
