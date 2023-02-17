@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:mybooknote/entities/image_entity.dart';
 import 'package:mybooknote/pages/subject_page/subject_controller.dart';
 
 class SubjectPage extends StatelessWidget {
@@ -13,9 +12,22 @@ class SubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SubjectController subjectController = SubjectController(subjectID: subjectID);
+    List<ImageEntity> selectedImages = [];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Materia')),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: Observer(builder: (_) {
+          return AppBar(
+              leading: subjectController.selectedImages.isNotEmpty
+                  ? IconButton(
+                      onPressed: subjectController.clearSelectedImages, icon: const Icon(Icons.close))
+                  : null,
+              title: Text(subjectController.selectedImages.isEmpty
+                  ? 'Matéria'
+                  : subjectController.selectedImages.length.toString()));
+        }),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -54,41 +66,92 @@ class SubjectPage extends StatelessWidget {
                 return ListView.separated(
                     padding: const EdgeInsets.only(top: 16),
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) => MediaQuery(
-                                      data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
-                                      child: SafeArea(
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              color: Colors.black,
-                                              child: Center(
-                                                child: Image.file(
-                                                  File(subjectController.images[index].url),
-                                                  fit: BoxFit.fill,
+                    itemBuilder: (context, index) => Stack(
+                          children: [
+                            InkWell(
+                              onLongPress: () {
+                                subjectController.selectImage(subjectController.images[index]);
+                                showBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () => print('Compartilhar!'),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: const [Icon(Icons.share), Text('Compartilhar')],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => print('Excluir!'),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: const [Icon(Icons.delete), Text('Excluir')],
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              },
+                              onTap: () {
+                                subjectController.selectedImages.isNotEmpty
+                                    ? subjectController.selectImage(subjectController.images[index])
+                                    : showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (context) => MediaQuery(
+                                              data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+                                              child: SafeArea(
+                                                child: Stack(
+                                                  children: [
+                                                    Container(
+                                                      color: Colors.black,
+                                                      child: Center(
+                                                        child: Image.file(
+                                                          File(subjectController.images[index].url),
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                        onPressed: () => context.pop(),
+                                                        icon: const Icon(
+                                                          Icons.close_rounded,
+                                                          color: Colors.white,
+                                                          size: 32,
+                                                        )),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
-                                            IconButton(
-                                                onPressed: () => context.pop(),
-                                                icon: const Icon(
-                                                  Icons.close_rounded,
-                                                  color: Colors.white,
-                                                  size: 32,
-                                                )),
-                                          ],
+                                            ));
+                              },
+                              child: Observer(builder: (_) {
+                                return Image.file(
+                                  File(subjectController.images[index].url),
+                                  fit: BoxFit.fill,
+                                );
+                              }),
+                            ),
+                            Observer(builder: (_) {
+                              return Visibility(
+                                visible: subjectController.selectedImages.isNotEmpty,
+                                child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                        margin: const EdgeInsets.all(5),
+                                        padding: const EdgeInsets.all(3),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.blue,
+                                          shape: BoxShape.circle,
                                         ),
-                                      ),
-                                    ));
-                          },
-                          child: Image.file(
-                            File(subjectController.images[index].url),
-                            fit: BoxFit.fill,
-                          ),
+                                        child: subjectController.selectedImages
+                                                .contains(subjectController.images[index])
+                                            ? const Icon(Icons.check, color: Colors.white)
+                                            : const Icon(Icons.circle_outlined, color: Colors.white))),
+                              );
+                            }),
+                          ],
                         ),
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemCount: subjectController.images.length);
