@@ -159,7 +159,7 @@ class SubjectPage extends StatelessWidget {
             ),
             Container(margin: EdgeInsets.only(top: 18), child: Text('Anotações')),
             InkWell(
-              onTap: () => context.pushNamed('/createAnotation'),
+              onTap: () => context.push('/createAnotation/$subjectID'),
               child: Container(
                 margin: const EdgeInsets.only(top: 8, right: 6),
                 width: 60,

@@ -11,57 +11,39 @@ part 'create_anotation_controller.g.dart';
 class CreateAnotationController = _CreateAnotationControllerBase with _$CreateAnotationController;
 
 abstract class _CreateAnotationControllerBase with Store {
+  _CreateAnotationControllerBase({required this.subjectID}) {
+    subjectID = subjectID;
+  }
+  late String subjectID;
   ObservableList<ImageEntity> images = ObservableList<ImageEntity>();
   final ImagePicker _picker = ImagePicker();
   final AddImageUsecase _addImageUsecase = AddImageUsecase(getIt<SubjectRepository>());
 
+  @action
   createAnotation() async {
-    //Create
-    //FirebaseFirestore db = FirebaseFirestore.instance;
-    //var collectionData = db.collection("subjects").doc('5M9geOM4qoDARvcXDGW8').collection('anotations');
-    //await collectionData.add({
-    //  'title': 'Geo aula 12',
-    //  'description': 'Aula feita com o Sales',
-    //  'images': [],
-//
-    //});
-
-    //AddImage
-
-
     FirebaseFirestore db = FirebaseFirestore.instance;
-    var collectionData = db
-        .collection("subjects")
-        .doc('5M9geOM4qoDARvcXDGW8')
-        .collection('anotations')
-        .doc('SVDql2ksXroWaZspBFuY');
-    var get = await collectionData.get();
-    var images = get.data()?['images'] as List;
-    images = [...images, 'foto2'];
-
-
-    await collectionData.set({
-      'images': images
-    }, SetOptions(merge: true));
+    var collectionData = db.collection("subjects").doc(subjectID).collection('anotations');
+    await collectionData.add({
+      'title': 'Geo aula 12',
+      'description': 'Aula feita com o Sales',
+      'images': [],
+    });
   }
 
   @action
-  Future<void> pickImageFromGalery({required String subjectID}) async {
+  Future<void> pickImageFromGalery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
     if (image != null) {
-      ImageEntity newImage = await _addImageUsecase.call(id: subjectID, urlImage: image.path);
-      images.add(newImage);
+      images.add(ImageEntity(url: image.path, title: 'Title Legal', description: 'Description legal'));
     }
   }
 
   @action
-  Future<void> pickImageFromCamera({required String subjectID}) async {
+  Future<void> pickImageFromCamera() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
-      ImageEntity newImage = await _addImageUsecase.call(id: subjectID, urlImage: image.path);
-      images.add(newImage);
+      images.add(ImageEntity(url: image.path, title: 'Title Legal', description: 'Description legal'));
     }
   }
 }

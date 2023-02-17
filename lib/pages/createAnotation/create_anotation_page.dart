@@ -6,11 +6,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mybooknote/pages/createAnotation/create_anotation_controller.dart';
 
 class CreateAnotation extends StatelessWidget {
-  const CreateAnotation({super.key});
+  
+  CreateAnotation({super.key, required this.subjectID});
+  String subjectID;
 
   @override
   Widget build(BuildContext context) {
-    CreateAnotationController controller = CreateAnotationController();
+    CreateAnotationController controller = CreateAnotationController(subjectID: subjectID);
 
     return Scaffold(
       appBar: AppBar(),
@@ -34,7 +36,7 @@ class CreateAnotation extends StatelessWidget {
             Row(
               children: [
                 InkWell(
-                  onTap: () => print('Click'),
+                  onTap: controller.pickImageFromGalery,
                   child: Container(
                     margin: const EdgeInsets.only(top: 8, right: 6),
                     width: 60,
@@ -45,7 +47,7 @@ class CreateAnotation extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () => print('Click'),
+                  onTap: controller.pickImageFromCamera,
                   child: Container(
                     margin: const EdgeInsets.only(top: 8, right: 6),
                     width: 60,
@@ -92,9 +94,6 @@ class CreateAnotation extends StatelessWidget {
                                     });
                               },
                               onTap: () {
-                                //subjectController.selectedImages.isNotEmpty
-                                //    ? subjectController.selectImage(subjectController.images[index])
-                                //    :
                                 showModalBottomSheet(
                                     isScrollControlled: true,
                                     context: context,

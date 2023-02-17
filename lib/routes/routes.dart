@@ -26,10 +26,12 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/createAnotation',
+      path: '/createAnotation/:subjectID',
       name: '/createAnotation',
       builder: (BuildContext context, GoRouterState state) {
-        return CreateAnotation();
+        return CreateAnotation(
+          subjectID: state.params["subjectID"]!
+        );
       },
     ),
   ],
