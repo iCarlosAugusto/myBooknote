@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mybooknote/entities/image_entity.dart';
@@ -22,8 +23,11 @@ abstract class _SubjectControllerBase with Store {
   final ListImagesUseCase _listImagesUsecase = ListImagesUseCase(getIt<SubjectRepository>());
   final AddImageUsecase _addImageUsecase = AddImageUsecase(getIt<SubjectRepository>());
 
+  late Stream<QuerySnapshot<Map<String, dynamic>>> snapshot;
+
   _SubjectControllerBase({required String subjectID}) {
-    loadImages(id: subjectID);
+    //loadImages(id: subjectID);
+    loadAnotations(subjectID: subjectID);
   }
 
   @observable
@@ -32,6 +36,12 @@ abstract class _SubjectControllerBase with Store {
   @action 
   void add() {
     count++;
+  }
+
+  @action loadAnotations({required String subjectID}) async {
+    CollectionReference db = FirebaseFirestore.instance.collection('subjects');
+    var a = db.doc('5M9geOM4qoDARvcXDGW8');
+    snapshot = a.collection('anotations').snapshots();
   }
 
   @action

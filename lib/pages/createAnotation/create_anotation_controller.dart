@@ -20,13 +20,19 @@ abstract class _CreateAnotationControllerBase with Store {
   final AddImageUsecase _addImageUsecase = AddImageUsecase(getIt<SubjectRepository>());
 
   @action
+  
   createAnotation() async {
+    List<Map<String, dynamic>> imagesAdded = images.map((element) => ImageEntity(
+      url: element.url, 
+      description: element.description, 
+      title: element.title
+      ).toJson()).toList();
     FirebaseFirestore db = FirebaseFirestore.instance;
     var collectionData = db.collection("subjects").doc(subjectID).collection('anotations');
     await collectionData.add({
       'title': 'Geo aula 12',
       'description': 'Aula feita com o Sales',
-      'images': [],
+      'images': imagesAdded
     });
   }
 

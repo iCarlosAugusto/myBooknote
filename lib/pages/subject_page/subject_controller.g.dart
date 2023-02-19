@@ -25,6 +25,15 @@ mixin _$SubjectController on _SubjectControllerBase, Store {
     });
   }
 
+  late final _$loadAnotationsAsyncAction =
+      AsyncAction('_SubjectControllerBase.loadAnotations', context: context);
+
+  @override
+  Future loadAnotations({required String subjectID}) {
+    return _$loadAnotationsAsyncAction
+        .run(() => super.loadAnotations(subjectID: subjectID));
+  }
+
   late final _$loadImagesAsyncAction =
       AsyncAction('_SubjectControllerBase.loadImages', context: context);
 
