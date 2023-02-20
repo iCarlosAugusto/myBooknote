@@ -12,6 +12,7 @@ import 'package:mybooknote/entities/subject_entity.dart';
 import 'package:mybooknote/main.dart';
 import 'package:mybooknote/pages/home_controller.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
+import 'package:mybooknote/widgets/drawer.dart';
 import 'package:mybooknote/widgets/subjectCard/subject_card.dart';
 import 'package:mybooknote/widgets/textfieldWidget.dart';
 
@@ -30,6 +31,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       resizeToAvoidBottomInset: true,
       appBar: AppBar(title: const Text('Home')),
       body: Padding(
@@ -39,8 +41,6 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 const Text('Olá, Carlos.'),
-                ElevatedButton(
-                    onPressed: controller.criarNoFirebase, child: const Text('Criar listar fotos')),
                 SizedBox(
                   height: 300,
                   child: StreamBuilder(
@@ -48,18 +48,18 @@ class _HomeState extends State<Home> {
                       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) return const CircularProgressIndicator();
                         return ListView.separated(
-                          itemBuilder: (BuildContext context, int index) {
-                            SubjectEntity subject = SubjectEntity.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
-                            return SubjectCard(
-                                name: subject.name,
-                                professor: subject.professor,
-                                onLongPress: () => print('LONG PRESS'),
-                                onTap: () => context.push('/subject/${snapshot.data!.docs[index].id}'),
-                                selected: false);
-                          },
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
-                          itemCount: snapshot.data!.docs.length,
-                        );
+                            itemBuilder: (BuildContext context, int index) {
+                              SubjectEntity subject = SubjectEntity.fromJson(
+                                  snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                              return SubjectCard(
+                                  name: subject.name,
+                                  professor: subject.professor,
+                                  onLongPress: () => print('LONG PRESS'),
+                                  onTap: () => context.push('/subject/${snapshot.data!.docs[index].id}'),
+                                  selected: false);
+                            },
+                            separatorBuilder: (_, __) => const SizedBox(height: 8),
+                            itemCount: snapshot.data!.docs.length);
                       }),
                 ),
               ],
