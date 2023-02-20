@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mybooknote/database/db.dart';
 import 'package:mybooknote/database/repositories/subjects/implemtations/subject_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mybooknote/routes/routes.dart';
@@ -9,7 +8,6 @@ import 'firebase_options.dart';
 final getIt = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  getIt.registerSingleton<DB>(DB(), signalsReady: true);
   getIt.registerSingleton<SubjectRepository>(SubjectRepository(), signalsReady: true);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());

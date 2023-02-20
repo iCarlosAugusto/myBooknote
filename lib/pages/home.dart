@@ -49,8 +49,7 @@ class _HomeState extends State<Home> {
                         if (!snapshot.hasData) return const CircularProgressIndicator();
                         return ListView.separated(
                           itemBuilder: (BuildContext context, int index) {
-                            SubjectEntity subject = SubjectEntity.fromJson(
-                                snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                            SubjectEntity subject = SubjectEntity.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
                             return SubjectCard(
                                 name: subject.name,
                                 professor: subject.professor,
