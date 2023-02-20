@@ -49,7 +49,7 @@ class SubjectPage extends StatelessWidget {
                         final data = docs[index].data();
                         AnotationEntity anotation  = AnotationEntity.fromJson(data);
                         return InkWell(
-                          onTap: () => print('ClicK!'),
+                          onTap: () => context.push('/anotation'),
                           child: Container(
                             width: 150,
                             height: 50,
