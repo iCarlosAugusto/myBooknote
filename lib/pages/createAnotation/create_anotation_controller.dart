@@ -38,9 +38,10 @@ abstract class _CreateAnotationControllerBase with Store {
 
   @action
   Future<void> pickImageFromGalery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      images.add(ImageEntity(url: image.path, title: 'Title Legal', description: 'Description legal'));
+    final List<XFile?> imagesPicked = await _picker.pickMultiImage();
+    if (imagesPicked.isNotEmpty) {
+      var imagesFormatted = imagesPicked.map((image) => ImageEntity(url: image!.path, title: 'Title Legal', description: 'Description Legal'));
+      images.addAll(imagesFormatted);
     }
   }
 
