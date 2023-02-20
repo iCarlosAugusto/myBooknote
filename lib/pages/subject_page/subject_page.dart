@@ -34,19 +34,38 @@ class SubjectPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              const Text('Anotações'),
+
               StreamBuilder(
                 stream: subjectController.snapshot,
                 builder: (_, snapshot) {
                   if (!snapshot.hasData) return const CircularProgressIndicator();
                   final docs = snapshot.data!.docs;
                   return SizedBox(
-                    height: 350,
+                    height: 90,
                     child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final data = docs[index].data();
-                        //AnotationEntity anotation  = AnotationEntity.fromJson(data);
-                        //print(anotation);
-                        return Text(data['title']);
+                        AnotationEntity anotation  = AnotationEntity.fromJson(data);
+                        return InkWell(
+                          onTap: () => print('ClicK!'),
+                          child: Container(
+                            width: 150,
+                            height: 50,
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.all(6),
+                            color: Colors.blue,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(anotation.title),
+                                Flexible(child: Text(anotation.description)),
+                              ],
+                            )
+                          ),
+                        );
                       }, itemCount: docs.length),
                   );
                 },
@@ -54,6 +73,7 @@ class SubjectPage extends StatelessWidget {
             ],
           )),
           floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
             onPressed: () => context.push('/createAnotation/$subjectID'),
           ),
     );
