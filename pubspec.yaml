@@ -58,7 +58,8 @@ dev_dependencies:
   mobx_codegen: ^2.1.1
   json_serializable: ^6.6.1
   auto_size_text: ^3.0.0
-
+  file_picker: ^5.2.5
+  dotted_border: ^2.0.0+3
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

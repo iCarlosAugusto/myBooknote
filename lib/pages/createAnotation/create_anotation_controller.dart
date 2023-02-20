@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,8 +9,8 @@ import 'package:mybooknote/main.dart';
 import 'package:mybooknote/routes/global_context.dart';
 import 'package:mybooknote/usecases/add_image_use_case.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../database/repositories/subjects/implemtations/subject_repository.dart';
+import 'package:file_picker/file_picker.dart';
 part 'create_anotation_controller.g.dart';
 
 class CreateAnotationController = _CreateAnotationControllerBase with _$CreateAnotationController;
@@ -46,6 +48,22 @@ abstract class _CreateAnotationControllerBase with Store {
     ScaffoldMessenger.of(GlobalContext.navigatorKey.currentContext!).showSnackBar(
       const SnackBar(content: Text('Anotação criada com sucesso!')),
     );
+  }
+
+  @action
+  pickDocument() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.image,
+    );
+
+    if (result != null) {
+
+      var imagesFormatted = result.files.map((file) => ImageEntity(url: file.path!, title: 'Title Legal', description: 'Description Legal'));
+      images.addAll(imagesFormatted);
+    } else {
+      // User canceled the picker
+    }
   }
 
   @action
