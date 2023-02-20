@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mybooknote/entities/image_entity.dart';
 import 'package:mybooknote/main.dart';
+import 'package:mybooknote/routes/global_context.dart';
 import 'package:mybooknote/usecases/add_image_use_case.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../database/repositories/subjects/implemtations/subject_repository.dart';
 part 'create_anotation_controller.g.dart';
@@ -19,28 +22,38 @@ abstract class _CreateAnotationControllerBase with Store {
   final ImagePicker _picker = ImagePicker();
   final AddImageUsecase _addImageUsecase = AddImageUsecase(getIt<SubjectRepository>());
 
+  TextEditingController titleTextfieldController = TextEditingController();
+  TextEditingController descriptionTextfieldController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @action
-  
   createAnotation() async {
-    List<Map<String, dynamic>> imagesAdded = images.map((element) => ImageEntity(
-      url: element.url, 
-      description: element.description, 
-      title: element.title
-      ).toJson()).toList();
+    if (!formKey.currentState!.validate()) return;
+
+    List<Map<String, dynamic>> imagesAdded = images
+        .map((element) =>
+            ImageEntity(url: element.url, description: element.description, title: element.title).toJson())
+        .toList();
     FirebaseFirestore db = FirebaseFirestore.instance;
     var collectionData = db.collection("subjects").doc(subjectID).collection('anotations');
     await collectionData.add({
-      'title': 'Geo aula 12',
-      'description': 'Aula feita com o Sales',
+      'title': titleTextfieldController.text,
+      'description': descriptionTextfieldController.text,
       'images': imagesAdded
     });
+    // ignore: use_build_context_synchronously
+    GlobalContext.navigatorKey.currentContext!.pop();
+    ScaffoldMessenger.of(GlobalContext.navigatorKey.currentContext!).showSnackBar(
+      const SnackBar(content: Text('Anotação criada com sucesso!')),
+    );
   }
 
   @action
   Future<void> pickImageFromGalery() async {
     final List<XFile?> imagesPicked = await _picker.pickMultiImage();
     if (imagesPicked.isNotEmpty) {
-      var imagesFormatted = imagesPicked.map((image) => ImageEntity(url: image!.path, title: 'Title Legal', description: 'Description Legal'));
+      var imagesFormatted = imagesPicked.map(
+          (image) => ImageEntity(url: image!.path, title: 'Title Legal', description: 'Description Legal'));
       images.addAll(imagesFormatted);
     }
   }
