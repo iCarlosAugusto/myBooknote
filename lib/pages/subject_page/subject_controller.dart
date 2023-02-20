@@ -40,7 +40,7 @@ abstract class _SubjectControllerBase with Store {
 
   @action loadAnotations({required String subjectID}) async {
     CollectionReference db = FirebaseFirestore.instance.collection('subjects');
-    var a = db.doc('5M9geOM4qoDARvcXDGW8');
+    var a = db.doc(subjectID);
     snapshot = a.collection('anotations').snapshots();
   }
 
