@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mybooknote/pages/createAnotation/create_anotation_controller.dart';
+import 'package:mybooknote/widgets/textfieldWidget.dart';
 
 class CreateAnotation extends StatelessWidget {
   CreateAnotation({super.key, required this.subjectID});
@@ -22,32 +23,26 @@ class CreateAnotation extends StatelessWidget {
           key: controller.formKey,
           child: Column(
             children: [
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Campo obrigátório';
-                  }
-                  return null;
-                },
+              TextfieldWidget(
                 controller: controller.titleTextfieldController,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Nome da anotação',
-                ),
-              ),
-              TextFormField(
+                labelText: 'Nome da anotação',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Campo obrigátório';
                   }
                   return null;
                 },
+              ),
+              TextfieldWidget(
                 controller: controller.descriptionTextfieldController,
-                maxLength: 500,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Descrição',
-                ),
+                labelText: 'Descrição',
+                margin: const EdgeInsets.only(top: 16),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Campo obrigátório';
+                  }
+                  return null;
+                },
               ),
               Row(
                 children: [

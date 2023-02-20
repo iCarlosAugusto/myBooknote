@@ -13,6 +13,7 @@ import 'package:mybooknote/main.dart';
 import 'package:mybooknote/pages/home_controller.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
 import 'package:mybooknote/widgets/subjectCard/subject_card.dart';
+import 'package:mybooknote/widgets/textfieldWidget.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -46,10 +47,10 @@ class _HomeState extends State<Home> {
                       stream: controller.subjects.snapshots(),
                       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) return const CircularProgressIndicator();
-                        return 
-                        ListView.separated(
+                        return ListView.separated(
                           itemBuilder: (BuildContext context, int index) {
-                            SubjectEntity subject = SubjectEntity.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                            SubjectEntity subject = SubjectEntity.fromJson(
+                                snapshot.data!.docs[index].data() as Map<String, dynamic>);
                             return SubjectCard(
                                 name: subject.name,
                                 professor: subject.professor,
@@ -86,19 +87,14 @@ class _HomeState extends State<Home> {
                               const Text("Criar nova disciplina"),
                             ],
                           ),
-                          TextFormField(
+                          TextfieldWidget(
                             controller: controller.subjectTextfieldController,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Nome da disciplina',
-                            ),
+                            labelText: 'Nome da disciplina',
                           ),
-                          TextFormField(
+                          TextfieldWidget(
                             controller: controller.professorTextfieldController,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Nome do professor',
-                            ),
+                            labelText: 'Nome do professor',
+                            margin: const EdgeInsets.only(top: 16),
                           ),
                           ElevatedButton(
                               onPressed: () => controller.createNewSubject(
