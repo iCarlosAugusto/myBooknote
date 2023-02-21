@@ -43,28 +43,39 @@ class SubjectPage extends StatelessWidget {
                     return docs.isEmpty
                         ? LottieBuilder.asset('lib/assets/animations/empty.json')
                         : SizedBox(
-                            height: 90,
+                            height: 300,
                             child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   final data = docs[index].data();
                                   AnotationEntity anotation = AnotationEntity.fromJson(data);
-                                  return InkWell(
-                                      onTap: () => context.push('/anotation'),
-                                      child: Container(
-                                          width: 150,
-                                          height: 50,
-                                          padding: const EdgeInsets.all(16),
-                                          margin: const EdgeInsets.all(6),
-                                          color: Colors.blue,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Text(anotation.title),
-                                              Flexible(child: Text(anotation.description))
-                                            ],
-                                          )));
+                                  return Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    child: ListTile(
+                                        onTap: () => context.push('/anotation'),
+                                        onLongPress: () => print('bbb'),
+                                        leading: const Icon(Icons.menu_book_rounded, ),
+                                        title: Text(anotation.title),
+                                        subtitle: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(anotation.description,
+                                              style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                              maxLines: 3,
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.only(top: 10),
+                                              child: Row(
+                                                children: [
+                                                  Text(anotation.images.length.toString()),
+                                                  const Icon(Icons.image, color: Colors.red,)
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        trailing: const Icon(Icons.arrow_forward_ios_rounded)),
+                                  );
                                 },
                                 itemCount: docs.length),
                           );
