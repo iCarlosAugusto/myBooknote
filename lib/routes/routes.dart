@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mybooknote/entities/anotation_entity.dart';
 import 'package:mybooknote/pages/anotation/anotation_page.dart';
 import 'package:mybooknote/pages/createAnotation/create_anotation_page.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
@@ -39,7 +40,8 @@ final GoRouter router = GoRouter(
       path: '/anotation',
       name: '/anotation',
       builder: (BuildContext context, GoRouterState state) {
-        return const AnotationPage();
+        AnotationEntity data = state.extra as AnotationEntity; // 👈 
+        return AnotationPage(data: data);
       },
     ),
   ],

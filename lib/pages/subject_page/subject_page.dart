@@ -52,7 +52,7 @@ class SubjectPage extends StatelessWidget {
                                   return Card(
                                     clipBehavior: Clip.antiAlias,
                                     child: ListTile(
-                                        onTap: () => context.push('/anotation'),
+                                        onTap: () => context.push('/anotation', extra: anotation),
                                         onLongPress: () => print('bbb'),
                                         leading: const Icon(Icons.menu_book_rounded, ),
                                         title: Text(anotation.title),
