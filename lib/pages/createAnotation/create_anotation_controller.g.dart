@@ -18,6 +18,15 @@ mixin _$CreateAnotationController on _CreateAnotationControllerBase, Store {
     return _$createAnotationAsyncAction.run(() => super.createAnotation());
   }
 
+  late final _$pickDocumentAsyncAction = AsyncAction(
+      '_CreateAnotationControllerBase.pickDocument',
+      context: context);
+
+  @override
+  Future pickDocument() {
+    return _$pickDocumentAsyncAction.run(() => super.pickDocument());
+  }
+
   late final _$pickImageFromGaleryAsyncAction = AsyncAction(
       '_CreateAnotationControllerBase.pickImageFromGalery',
       context: context);
