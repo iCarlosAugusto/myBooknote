@@ -12,6 +12,9 @@ abstract class _AuthenticationControllerBase with Store {
   TextEditingController emailTextfieldController = TextEditingController();
   TextEditingController passwordTextfieldController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
+  @observable
+  bool isLoading = false;
 
   @action
   checkUser() {
@@ -22,16 +25,18 @@ abstract class _AuthenticationControllerBase with Store {
 
   @action
   Future<void> authenticate() async {
-
     if(!formKey.currentState!.validate()) return;
 
     try {
+      isLoading = true;
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailTextfieldController.text, 
         password: passwordTextfieldController.text
       );
       GlobalContext.navigatorKey.currentContext!.goNamed('/home');
+      isLoading = false;
     } catch (e) {
+      isLoading = false;
       ScaffoldMessenger.of(GlobalContext.navigatorKey.currentContext!).showSnackBar(
         const SnackBar(content: Text('Email ou senha incorretos'), backgroundColor: Colors.red),
       );

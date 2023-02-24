@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mybooknote/pages/authentication/authentication_controller.dart';
+import 'package:mybooknote/widgets/button_widget.dart';
 import 'package:mybooknote/widgets/textfieldWidget.dart';
 
 class AuthenticationPage extends StatelessWidget {
@@ -22,18 +24,22 @@ class AuthenticationPage extends StatelessWidget {
                 ElevatedButton(onPressed: controller.checkUser, child: Text('Check')),
                 Text('Olá, \n seja bem-vindo :)'),
                 TextfieldWidget(
-                  labelText: 'Email',
-                  hintText: 'Ex: carlos@gmail.com',
-                  controller: controller.emailTextfieldController,
-                  validator: (value) => controller.validateEmail(value)
-                ),
+                    labelText: 'Email',
+                    hintText: 'Ex: carlos@gmail.com',
+                    controller: controller.emailTextfieldController,
+                    validator: (value) => controller.validateEmail(value)),
                 TextfieldWidget(
                   labelText: 'Senha',
                   margin: const EdgeInsets.only(top: 16),
                   controller: controller.passwordTextfieldController,
                   validator: (value) => controller.validatePassword(value),
                 ),
-                ElevatedButton(onPressed: controller.authenticate, child: Text('Entrar')),
+                Observer(
+                    builder: (_) => ButtonWidget(
+                          onPressed: controller.authenticate,
+                          title: 'Entrar',
+                          isLoading: controller.isLoading,
+                        )),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Text('Ou'),
