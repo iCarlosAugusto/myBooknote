@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mybooknote/pages/authentication/authentication_controller.dart';
 import 'package:mybooknote/widgets/button_widget.dart';
 import 'package:mybooknote/widgets/textfieldWidget.dart';
@@ -21,8 +23,7 @@ class AuthenticationPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: controller.checkUser, child: Text('Check')),
-                Text('Olá, \n seja bem-vindo :)'),
+                const Text('Olá, \n seja bem-vindo :)'),
                 TextfieldWidget(
                     labelText: 'Email',
                     hintText: 'Ex: carlos@gmail.com',
@@ -64,10 +65,19 @@ class AuthenticationPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 52),
-                  child: Text('Não tem uma conta? Crie uma agora!'),
-                )
+                Padding(
+                    padding: const EdgeInsets.only(top: 52),
+                    child: Text.rich(
+                      TextSpan(text: 'Não tem uma conta? ', children: [
+                        TextSpan(
+                            text: 'Crie agora!',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.pushNamed('/createAccount');
+                              },
+                            style: const TextStyle(color: Colors.blue))
+                      ]),
+                    ))
               ],
             ),
           ),

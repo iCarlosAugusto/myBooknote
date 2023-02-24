@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mybooknote/entities/anotation_entity.dart';
 import 'package:mybooknote/pages/anotation/anotation_page.dart';
 import 'package:mybooknote/pages/authentication/authentication_page.dart';
+import 'package:mybooknote/pages/createAccount/create_account_page.dart';
 import 'package:mybooknote/pages/createAnotation/create_anotation_page.dart';
 import 'package:mybooknote/pages/subject_page/subject_page.dart';
 import 'package:mybooknote/routes/global_context.dart';
@@ -45,6 +46,14 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         AnotationEntity data = state.extra as AnotationEntity; // 👈
         return AnotationPage(data: data);
+      },
+    ),
+
+    GoRoute(
+      path: '/createAccount',
+      name: '/createAccount',
+      builder: (BuildContext context, GoRouterState state) {
+        return const CreateAccountPage();
       },
     ),
   ],
